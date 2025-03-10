@@ -106,7 +106,7 @@ local Toggle = MainTab:CreateToggle({
  local Button = AntiCheatTab:CreateButton({
 	Name = "Reset JumpPower/WalkSpeed",
 	Callback = function()
-		game.Players.LocalPlayer.Character.Humanoid.JumpPower = 16
+		game.Players.LocalPlayer.Character.Humanoid.JumpPower = 50
 		game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
 	end,
  })
