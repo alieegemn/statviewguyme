@@ -30,6 +30,9 @@ local MainWindow = Rayfield:CreateWindow({
  local MainTab = MainWindow:CreateTab("FE", 4483362458) -- Title, Image
  local AntiCheatTab = MainWindow:CreateTab("AntiCheat Bypassed Stuff", 4483362458) -- Title, Image
 
+local loopActive = false
+local loopThread
+
  local Button = MainTab:CreateButton({
 	Name = "Change Status",
 	Callback = function(v)
@@ -40,19 +43,29 @@ local MainWindow = Rayfield:CreateWindow({
 
 
 
- local Toggle = MainTab:CreateToggle({
-	Name = "Loop Change Status",
-	CurrentValue = false,
-	Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-	Callback = function(InfiniteJumpEnabled)
-        local InfiniteJumpEnabled = true
-        game:GetService("UserInputService").JumpRequest:connect(function()
-            if InfiniteJumpEnabled then
-                game:GetService("ReplicatedStorage"):WaitForChild("ChangeStatus"):FireServer()
+
+local Toggle = MainTab:CreateToggle({
+    Name = "Loop Change Status",
+    CurrentValue = false,
+    Flag = "Toggle1",
+    Callback = function(Value)
+        loopActive = Value
+        if loopActive then
+            loopThread = coroutine.wrap(function()
+                while loopActive do
+                    game:GetService("ReplicatedStorage"):WaitForChild("ChangeStatus"):FireServer()
+					task.wait(1)
+                end
+            end)
+            loopThread()
+        else
+            if loopThread then
+                loopActive = false
+                loopThread = nil
             end
-        end)
-	end,
- })
+        end
+    end,
+})
 
 
 
@@ -85,7 +98,57 @@ local MainWindow = Rayfield:CreateWindow({
 local Button = AntiCheatTab:CreateButton({
    Name = "AntiCheat Bypasser V1.9",
    Callback = function()
-   -- The function that takes place when the button is pressed
+   Rayfield:Notify({
+   Title = "Anti Cheat Bypasser V1.9",
+   Content = "SİT ANYWARE TO FİX CHARACTER OR CUFF PLAYER AND TO FIX IT",
+   Duration = 6.5,
+   Image = 4483362458,
+})
+   local players = game:GetService('Players')
+local lplr = players.LocalPlayer
+local lastCF, stopFlag, heartbeatConnection
+
+local function start()
+    heartbeatConnection = game:GetService('RunService').Heartbeat:Connect(function()
+        if stopFlag then
+            return
+        end
+        lastCF = lplr.Character:FindFirstChildOfClass('Humanoid').RootPart.CFrame
+    end)
+    lplr.Character:FindFirstChildOfClass('Humanoid').RootPart:GetPropertyChangedSignal('CFrame'):Connect(function()
+        stopFlag = true
+        lplr.Character:FindFirstChildOfClass('Humanoid').RootPart.CFrame = lastCF
+        game:GetService('RunService').Heartbeat:Wait()
+        stopFlag = false
+    end)
+    lplr.Character:FindFirstChildOfClass('Humanoid').Died:Connect(function()
+        stop() -- Died olduÄŸunda stop fonksiyonunu Ã§aÄŸÄ±rÄ±r.
+    end)
+end
+
+local function stop()
+    if heartbeatConnection then
+        heartbeatConnection:Disconnect()
+        heartbeatConnection = nil
+    end
+    stopFlag = true
+end
+
+lplr.CharacterAdded:Connect(function(character)
+    repeat
+        game:GetService('RunService').Heartbeat:Wait()
+    until character:FindFirstChildOfClass('Humanoid')
+    repeat
+        game:GetService('RunService').Heartbeat:Wait()
+    until character:FindFirstChildOfClass('Humanoid').RootPart
+    start()
+end)
+
+lplr.CharacterRemoving:Connect(function()
+    stop() -- CharacterRemoving olduÄŸunda stop fonksiyonunu Ã§aÄŸÄ±rÄ±r.
+end)
+
+start()
    end,
 })
 
