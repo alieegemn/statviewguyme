@@ -21,8 +21,8 @@ local MainWindow = Rayfield:CreateWindow({
 	   Note = "Key: just buy from discrod",
 	   FileName = "StatviewPrisonFETrolGUI",
 	   SaveKey = true,
-	   GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
-	   Key = "123"
+	   GrabKeyFromSite = true, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+	   Key = "https://pastebin.com/raw/tbsAmtKS"
 	}
  })
 
