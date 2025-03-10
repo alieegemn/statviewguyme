@@ -1,0 +1,100 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local MainWindow = Rayfield:CreateWindow({
+	Name = "Statview Troll GUI",
+	LoadingTitle = "Loading...",
+	LoadingSubtitle = "by HackManHub",
+	ConfigurationSaving = {
+	   Enabled = true,
+	   FolderName = nil, -- Create a custom folder for your hub/game
+	   FileName = "Test"
+	},
+	Discord = {
+	   Enabled = true,
+	   Invite = "https://discord.gg/JaPpBufYVW", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ABCD would be ABCD.
+	   RememberJoins = true -- Set this to false to make them join the discord every time they load it up
+	},
+	KeySystem = true, -- Set this to true to use our key system
+	KeySettings = {
+	   Title = "Statview Prison FE Troll GUI",
+	   Subtitle = "Key System",
+	   Note = "Key: just buy from discrod",
+	   FileName = "StatviewPrisonFETrolGUI",
+	   SaveKey = true,
+	   GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+	   Key = "123"
+	}
+ })
+
+
+ local MainTab = MainWindow:CreateTab("FE", 4483362458) -- Title, Image
+ local AntiCheatTab = MainWindow:CreateTab("AntiCheat Bypassed Stuff", 4483362458) -- Title, Image
+
+ local Button = MainTab:CreateButton({
+	Name = "Change Status",
+	Callback = function(v)
+		v = game:GetService("ReplicatedStorage"):WaitForChild("ChangeStatus"):FireServer()
+	end,
+ })
+
+
+
+
+ local Toggle = MainTab:CreateToggle({
+	Name = "Loop Change Status",
+	CurrentValue = false,
+	Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+	Callback = function(InfiniteJumpEnabled)
+        local InfiniteJumpEnabled = true
+        game:GetService("UserInputService").JumpRequest:connect(function()
+            if InfiniteJumpEnabled then
+                game:GetService("ReplicatedStorage"):WaitForChild("ChangeStatus"):FireServer()
+            end
+        end)
+	end,
+ })
+
+
+
+ local Slider = AntiCheatTab:CreateSlider({
+	Name = "Walkspeed",
+	Range = {16, 250},
+	Increment = 10,
+	Suffix = "Walkspeed",
+	CurrentValue = 10,
+	Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+	Callback = function(v)
+		game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = v
+	end,
+ })
+
+
+
+ local Slider = AntiCheatTab:CreateSlider({
+	Name = "JumpPower",
+	Range = {50, 500},
+	Increment = 10,
+	Suffix = "JumpPower",
+	CurrentValue = 10,
+	Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+	Callback = function(v)
+		game.Players.LocalPlayer.Character.Humanoid.JumpPower = v
+	end,
+ })
+
+local Button = AntiCheatTab:CreateButton({
+   Name = "AntiCheat Bypasser V1.9",
+   Callback = function()
+   -- The function that takes place when the button is pressed
+   end,
+})
+
+  local Button = AntiCheatTab:CreateButton({
+	Name = "Toggle/UnToggle Noclip",
+	Callback = function(v)
+		v = print("yeah he")
+	end,
+ })
+
+
+ 
