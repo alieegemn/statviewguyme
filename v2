@@ -23,7 +23,6 @@ local MainWindow = Rayfield:CreateWindow({
 	   SaveKey = true,
 	   GrabKeyFromSite = true, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
 	   Key = "https://pastebin.com/raw/4LJbA0PR"
-	   Key = "https://pastebin.com/raw/1jBcmSdM"
 	}
  })
 
