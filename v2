@@ -1,7 +1,7 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local MainWindow = Rayfield:CreateWindow({
-	Name = "Statview Troll GUI",
+	Name = "Statview Troll GUI by HackManHub",
 	LoadingTitle = "Loading...",
 	LoadingSubtitle = "by HackManHub",
 	ConfigurationSaving = {
@@ -27,9 +27,61 @@ local MainWindow = Rayfield:CreateWindow({
  })
 
 
- local MainTab = MainWindow:CreateTab("FE", 4483362458) -- Title, Image
- local AntiCheatTab = MainWindow:CreateTab("AntiCheat Bypassed Stuff", 4483362458) -- Title, Image
- local Settings = MainWindow:CreateTab("Soon", 4483362458) -- Title, Image
+local MainTab = MainWindow:CreateTab("FE", 4483362458) -- Title, Image
+local AntiCheatTab = MainWindow:CreateTab("AntiCheat Bypassed Stuff", 4483362458) -- Title, Image
+local NewCategory = MainWindow:CreateTab("Teleports", 4483362458) -- Title, Image
+local Settings = MainWindow:CreateTab("Soon", 4483362458) -- Title, Image
+
+local loopActive = false
+
+
+NewCategory:CreateButton({
+    Name = "Admin room",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            player.Character.HumanoidRootPart.CFrame = CFrame.new(-49998, 4, -406) 
+        end
+    end,
+})
+NewCategory:CreateButton({
+    Name = "High command 1",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            player.Character.HumanoidRootPart.CFrame = CFrame.new(-2318, 33, -637)
+        end
+    end,
+})
+NewCategory:CreateButton({
+    Name = "High command 2",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            player.Character.HumanoidRootPart.CFrame = CFrame.new(-2317, 33, -678) 
+        end
+    end,
+})
+NewCategory:CreateButton({
+    Name = "Control room",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            player.Character.HumanoidRootPart.CFrame = CFrame.new(-2262, 48, -779)
+        end
+    end,
+})
+NewCategory:CreateButton({
+    Name = "Middle point Cell",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            player.Character.HumanoidRootPart.CFrame = CFrame.new(-2279, 33, -765) 
+        end
+    end,
+})
+
+
 
 local loopActive = false
 local loopThread
