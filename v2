@@ -1,406 +1,86 @@
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+local KeyGuardLibrary = loadstring(game:HttpGet("https://cdn.keyguardian.org/library/v1.0.0.lua"))()
+local trueData = "23bf6fc3c8414cb994647891828245e1"
+local falseData = "8e57ee7ebcbc4fb096cded167f1c63a6"
 
-local MainWindow = Rayfield:CreateWindow({
-	Name = "Statview Troll GUI by HackManHub",
-	LoadingTitle = "Loading...",
-	LoadingSubtitle = "by HackManHub",
-	ConfigurationSaving = {
-	   Enabled = true,
-	   FolderName = nil, -- Create a custom folder for your hub/game
-	   FileName = "Test"
-	},
-	Discord = {
-	   Enabled = true,
-	   Invite = "https://discord.gg/JaPpBufYVW", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ABCD would be ABCD.
-	   RememberJoins = true -- Set this to false to make them join the discord every time they load it up
-	},
-	KeySystem = false, -- Set this to true to use our key system
-	KeySettings = {
-	   Title = "Statview Prison FE Troll GUI",
-	   Subtitle = "Key System",
-	   Note = "Key: just buy from discrod",
-	   FileName = "StatviewPrisonFETrolGUI",
-	   SaveKey = true,
-	   GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
-	   Key = "RF_9273641QWERTY"
-	}
- })
-
-
-local MainTab = MainWindow:CreateTab("FE", 4483362458) -- Title, Image
-local AntiCheatTab = MainWindow:CreateTab("AntiCheat Bypassed Stuff", 4483362458) -- Title, Image
-local NewCategory = MainWindow:CreateTab("Teleports", 4483362458) -- Title, Image
-local Settings = MainWindow:CreateTab("Soon", 4483362458) -- Title, Image
-
-local loopActive = false
-
-
-NewCategory:CreateButton({
-    Name = "Admin room",
-    Callback = function()
-        local player = game.Players.LocalPlayer
-        if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-            player.Character.HumanoidRootPart.CFrame = CFrame.new(-49998, 4, -406) 
-        end
-    end,
-})
-NewCategory:CreateButton({
-    Name = "High command 1",
-    Callback = function()
-        local player = game.Players.LocalPlayer
-        if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-            player.Character.HumanoidRootPart.CFrame = CFrame.new(-2318, 33, -637)
-        end
-    end,
-})
-NewCategory:CreateButton({
-    Name = "High command 2",
-    Callback = function()
-        local player = game.Players.LocalPlayer
-        if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-            player.Character.HumanoidRootPart.CFrame = CFrame.new(-2317, 33, -678) 
-        end
-    end,
-})
-NewCategory:CreateButton({
-    Name = "Control room",
-    Callback = function()
-        local player = game.Players.LocalPlayer
-        if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-            player.Character.HumanoidRootPart.CFrame = CFrame.new(-2262, 48, -779)
-        end
-    end,
-})
-NewCategory:CreateButton({
-    Name = "Middle point Cell",
-    Callback = function()
-        local player = game.Players.LocalPlayer
-        if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-            player.Character.HumanoidRootPart.CFrame = CFrame.new(-2279, 33, -765) 
-        end
-    end,
+KeyGuardLibrary.Set({
+	publicToken = "86b13899139841ce8ffca6b7aca4b739",
+	privateToken = "733bc206af3844d18377d660ab57d24e",
+	trueData = trueData,
+	falseData = falseData,
 })
 
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local key = ""
 
-
-local loopActive = false
-local loopThread
-
- local Button = MainTab:CreateButton({
-	Name = "Rank Up To Cadet!",
-	Callback = function()
-		game:GetService("ReplicatedStorage").RankForQuiz:InvokeServer()
-	end,
- })
-
- local Button = MainTab:CreateButton({
-	Name = "Change Status",
-	Callback = function(v)
-		v = game:GetService("ReplicatedStorage"):WaitForChild("ChangeStatus"):FireServer()
-	end,
- })
-
-
-
-
-
-local Toggle = MainTab:CreateToggle({
-    Name = "Loop Change Status",
-    CurrentValue = false,
-    Flag = "Toggle1",
-    Callback = function(Value)
-        loopActive = Value
-        if loopActive then
-            loopThread = coroutine.wrap(function()
-                while loopActive do
-                    game:GetService("ReplicatedStorage"):WaitForChild("ChangeStatus"):FireServer()
-					task.wait(1)
-                end
-            end)
-            loopThread()
-        else
-            if loopThread then
-                loopActive = false
-                loopThread = nil
-            end
-        end
-    end,
+local Window = Fluent:CreateWindow({
+		Title = "Key System",
+		SubTitle = "HackManHub",
+		TabWidth = 160,
+		Size = UDim2.fromOffset(580, 340),
+		Acrylic = false,
+		Theme = "Dark",
+		MinimizeKey = Enum.KeyCode.LeftControl
 })
 
+local Tabs = {
+		KeySys = Window:AddTab({ Title = "Key System", Icon = "key" }),
+}
 
- local Button = MainTab:CreateButton({
-	Name = "SkyDive (First Cuff Player want to skydive and click skydive)",
-	Callback = function()
-		game.Players.LocalPlayer.Character.Humanoid.HipHeight = 300
-wait(0.5)
-local function unequipTool(player)
-    local character = player.Character
-    if character then
-        local humanoid = character:FindFirstChild("Humanoid")
-        if humanoid then
-            humanoid:UnequipTools()
-        end
-    end
-end
-
--- Example usage (unequip the tool of the player who runs the script):
-local player = game.Players.LocalPlayer -- for local scripts (client-side)
-if player then
-  unequipTool(player)
-end
-
---Example Usage (unequip tool from every player)
-local function unequipAllTools()
-    for _, player in ipairs(game.Players:GetPlayers()) do
-        unequipTool(player)
-    end
-end
-
---Example Usage (unequip tool from specific player)
-local function unequipSpecificTool(playerName)
-  local targetPlayer = game.Players:FindFirstChild(playerName)
-  if targetPlayer then
-    unequipTool(targetPlayer)
-  end
-end
-
--- Example Usage (server-side, unequip tools from all players):
---[[
-game.Players.PlayerAdded:Connect(function(player)
-    player.CharacterAdded:Connect(function(character)
-        --You can add a wait() here if needed.
-        unequipTool(player)
-    end)
-end)
---]]
-
---Example usage (server side, unequip all tools on a button press)
---[[
-local button = --path to button here
-button.MouseButton1Click:Connect(function()
-    unequipAllTools()
-end)
---]]
-wait(1)
-game.Players.LocalPlayer.Character.Humanoid.HipHeight = 00
-
-	end,
- })
-
- local Slider = AntiCheatTab:CreateSlider({
-	Name = "Walkspeed",
-	Range = {16, 500},
-	Increment = 10,
-	Suffix = "Walkspeed",
-	CurrentValue = 10,
-	Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-	Callback = function(v)
-		game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = v
-	end,
- })
-
-
-
- local Slider = AntiCheatTab:CreateSlider({
-	Name = "JumpPower",
-	Range = {50, 500},
-	Increment = 10,
-	Suffix = "JumpPower",
-	CurrentValue = 10,
-	Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-	Callback = function(v)
-		game.Players.LocalPlayer.Character.Humanoid.JumpPower = v
-	end,
- })
-
- local Button = AntiCheatTab:CreateButton({
-	Name = "Reset JumpPower/WalkSpeed",
-	Callback = function()
-		game.Players.LocalPlayer.Character.Humanoid.JumpPower = 16
-		game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
-	end,
- })
-
-local Button = AntiCheatTab:CreateButton({
-   Name = "AntiCheat Bypasser V1.9",
-   Callback = function()
-   Rayfield:Notify({
-   Title = "Anti Cheat Bypasser V1.9",
-   Content = "SİT ANYWARE TO FİX CHARACTER OR CUFF PLAYER AND TO FIX IT",
-   Duration = 6.5,
-   Image = 4483362458,
-})
-   local players = game:GetService('Players')
-local lplr = players.LocalPlayer
-local lastCF, stopFlag, heartbeatConnection
-
-local function start()
-    heartbeatConnection = game:GetService('RunService').Heartbeat:Connect(function()
-        if stopFlag then
-            return
-        end
-        lastCF = lplr.Character:FindFirstChildOfClass('Humanoid').RootPart.CFrame
-    end)
-    lplr.Character:FindFirstChildOfClass('Humanoid').RootPart:GetPropertyChangedSignal('CFrame'):Connect(function()
-        stopFlag = true
-        lplr.Character:FindFirstChildOfClass('Humanoid').RootPart.CFrame = lastCF
-        game:GetService('RunService').Heartbeat:Wait()
-        stopFlag = false
-    end)
-    lplr.Character:FindFirstChildOfClass('Humanoid').Died:Connect(function()
-        stop() -- Died olduÄŸunda stop fonksiyonunu Ã§aÄŸÄ±rÄ±r.
-    end)
-end
-
-local function stop()
-    if heartbeatConnection then
-        heartbeatConnection:Disconnect()
-        heartbeatConnection = nil
-    end
-    stopFlag = true
-end
-
-lplr.CharacterAdded:Connect(function(character)
-    repeat
-        game:GetService('RunService').Heartbeat:Wait()
-    until character:FindFirstChildOfClass('Humanoid')
-    repeat
-        game:GetService('RunService').Heartbeat:Wait()
-    until character:FindFirstChildOfClass('Humanoid').RootPart
-    start()
-end)
-
-lplr.CharacterRemoving:Connect(function()
-    stop() -- CharacterRemoving olduÄŸunda stop fonksiyonunu Ã§aÄŸÄ±rÄ±r.
-end)
-
-start()
-   end,
+local Entkey = Tabs.KeySys:AddInput("Input", {
+		Title = "Enter Freemium/Premium Key",
+		Description = "Enter Key Here",
+		Default = "",
+		Placeholder = "Enter key…",
+		Numeric = false,
+		Finished = false,
+		Callback = function(Value)
+				key = Value
+		end
 })
 
-  local Button = AntiCheatTab:CreateButton({
-	Name = "Toggle/UnToggle Noclip",
-	Callback = function()
-	local Workspace = game:GetService("Workspace")
-local CoreGui = game:GetService("CoreGui")
-local Players = game:GetService("Players")
-local Noclip = Instance.new("ScreenGui")
-local BG = Instance.new("Frame")
-local Title = Instance.new("TextLabel")
-local Toggle = Instance.new("TextButton")
-local StatusPF = Instance.new("TextLabel")
-local Status = Instance.new("TextLabel")
-local Plr = Players.LocalPlayer
-local Clipon = false
-
-Noclip.Name = "Noclip"
-Noclip.Parent = game.CoreGui
-
-BG.Name = "BG"
-BG.Parent = Noclip
-BG.BackgroundColor3 = Color3.new(0.0980392, 0.0980392, 0.0980392)
-BG.BorderColor3 = Color3.new(0.0588235, 0.0588235, 0.0588235)
-BG.BorderSizePixel = 2
-BG.Position = UDim2.new(0.149479166, 0, 0.82087779, 0)
-BG.Size = UDim2.new(0, 210, 0, 127)
-BG.Active = true
-BG.Draggable = true
-
-Title.Name = "Title"
-Title.Parent = BG
-Title.BackgroundColor3 = Color3.new(0.266667, 0.00392157, 0.627451)
-Title.BorderColor3 = Color3.new(0.180392, 0, 0.431373)
-Title.BorderSizePixel = 2
-Title.Size = UDim2.new(0, 210, 0, 33)
-Title.Font = Enum.Font.Highway
-Title.Text = "Noclip"
-Title.TextColor3 = Color3.new(1, 1, 1)
-Title.FontSize = Enum.FontSize.Size32
-Title.TextSize = 30
-Title.TextStrokeColor3 = Color3.new(0.180392, 0, 0.431373)
-Title.TextStrokeTransparency = 0
-
-Toggle.Parent = BG
-Toggle.BackgroundColor3 = Color3.new(0.266667, 0.00392157, 0.627451)
-Toggle.BorderColor3 = Color3.new(0.180392, 0, 0.431373)
-Toggle.BorderSizePixel = 2
-Toggle.Position = UDim2.new(0.152380958, 0, 0.374192119, 0)
-Toggle.Size = UDim2.new(0, 146, 0, 36)
-Toggle.Font = Enum.Font.Highway
-Toggle.FontSize = Enum.FontSize.Size28
-Toggle.Text = "Toggle"
-Toggle.TextColor3 = Color3.new(1, 1, 1)
-Toggle.TextSize = 25
-Toggle.TextStrokeColor3 = Color3.new(0.180392, 0, 0.431373)
-Toggle.TextStrokeTransparency = 0
-
-StatusPF.Name = "StatusPF"
-StatusPF.Parent = BG
-StatusPF.BackgroundColor3 = Color3.new(1, 1, 1)
-StatusPF.BackgroundTransparency = 1
-StatusPF.Position = UDim2.new(0.314285725, 0, 0.708661377, 0)
-StatusPF.Size = UDim2.new(0, 56, 0, 20)
-StatusPF.Font = Enum.Font.Highway
-StatusPF.FontSize = Enum.FontSize.Size24
-StatusPF.Text = "Status:"
-StatusPF.TextColor3 = Color3.new(1, 1, 1)
-StatusPF.TextSize = 20
-StatusPF.TextStrokeColor3 = Color3.new(0.333333, 0.333333, 0.333333)
-StatusPF.TextStrokeTransparency = 0
-StatusPF.TextWrapped = true
-
-Status.Name = "Status"
-Status.Parent = BG
-Status.BackgroundColor3 = Color3.new(1, 1, 1)
-Status.BackgroundTransparency = 1
-Status.Position = UDim2.new(0.580952346, 0, 0.708661377, 0)
-Status.Size = UDim2.new(0, 56, 0, 20)
-Status.Font = Enum.Font.Highway
-Status.FontSize = Enum.FontSize.Size14
-Status.Text = "off"
-Status.TextColor3 = Color3.new(0.666667, 0, 0)
-Status.TextScaled = true
-Status.TextSize = 14
-Status.TextStrokeColor3 = Color3.new(0.180392, 0, 0.431373)
-Status.TextWrapped = true
-Status.TextXAlignment = Enum.TextXAlignment.Left
-
-
-Toggle.MouseButton1Click:connect(function()
-	if Status.Text == "off" then
-		Clipon = true
-		Status.Text = "on"
-		Status.TextColor3 = Color3.new(0,185,0)
-		Stepped = game:GetService("RunService").Stepped:Connect(function()
-			if not Clipon == false then
-				for a, b in pairs(Workspace:GetChildren()) do
-                if b.Name == Plr.Name then
-                for i, v in pairs(Workspace[Plr.Name]:GetChildren()) do
-                if v:IsA("BasePart") then
-                v.CanCollide = false
-                end end end end
-			else
-				Stepped:Disconnect()
-			end
-		end)
-	elseif Status.Text == "on" then
-		Clipon = false
-		Status.Text = "off"
-		Status.TextColor3 = Color3.new(170,0,0)
-	end
-end)
-	end,
- })
-
- local ColorPicker = Settings:CreateColorPicker({
-    Name = "Color Picker",
-    Color = Color3.fromRGB(255,255,255),
-    Flag = "ColorPicker1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-    Callback = function(Value)
-        -- The function that takes place every time the color picker is moved/changed
-        -- The variable (Value) is a Color3fromRGB value based on which color is selected
-    end
+local Checkkey = Tabs.KeySys:AddButton({
+		Title = "Check	Freemium Key",
+		Description = "Enter Key before pressing this button",
+		Callback = function()
+				local response = KeyGuardLibrary.validateDefaultKey(key)
+				if response == trueData then
+						print("Key is valid")
+						loadstring(game:HttpGet("https://raw.githubusercontent.com/alieegemn/statviewguyme/refs/heads/main/freemium"))()
+				else
+						print("Key is invalid  try to use premium if you have premium")
+						
+				end
+		end
 })
 
+local Checkkey = Tabs.KeySys:AddButton({
+		Title = "Check	Premium Key",
+		Description = "Enter Key before pressing this button",
+		Callback = function()
+				local response = KeyGuardLibrary.validatePremiumKey(key)
+				if response == trueData then
+						print("Key is valid")
+						loadstring(game:HttpGet("https://raw.githubusercontent.com/alieegemn/statviewguyme/refs/heads/main/premium"))()
+				else
+						print("Key is invalid  try to use freemium if you have key or your key got expierdexpired")
+						
+				end
+		end
+})
 
- 
+local Getkey = Tabs.KeySys:AddButton({
+		Title = "Get Key Whit Freemium",
+		Description = "Get Key here paste it on browser it tooks 3 steeps",
+		Callback = function()
+				setclipboard(KeyGuardLibrary.getLink())
+		end
+})
+
+local Getkey = Tabs.KeySys:AddButton({
+		Title = "Get Key Whit Premium",
+		Description = "Get Key here paste it on browser to buy premium key its cheap and worth it",
+		Callback = function()
+				setclipboard("https://discord.gg/ZbyTS45j8E")
+		end
+})
+Window:SelectTab(1)
