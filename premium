@@ -1,0 +1,55 @@
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+
+local Window = Fluent:CreateWindow({
+    Title = "HackManHub Game Menu [Premium]",
+    SubTitle = "1.0.2",
+    TabWidth = 160,
+    Size = UDim2.fromOffset(580, 460),
+    Acrylic = false, -- The blur may be detectable, setting this to false disables blur entirely
+    Theme = "Dark",
+    MinimizeKey = Enum.KeyCode.LeftControl -- Used when theres no MinimizeKeybind
+})
+
+--Fluent provides Lucide Icons https://lucide.dev/icons/ for the tabs, icons are optional
+local Tabs = {
+    Main = Window:AddTab({ Title = "Statview Troll Gui", Icon = "columns-4" }),
+	Game1 = Window:AddTab({ Title = "Rivals", Icon = "gamepad-2" }),
+	Game2 = Window:AddTab({ Title = "Arsenal", Icon = "gamepad-2" }),
+}
+
+local Options = Fluent.Options
+
+do
+    Fluent:Notify({
+        Title = "HackManHub Game Menu",
+        Content = "Games Loaded",
+        SubContent = "Premium Detected", -- Optional
+        Duration = 5 -- Set to nil to make the notification not disappear
+    })
+
+end
+
+Tabs.Main:AddParagraph({
+        Title = "Paid Script",
+        Content = "This is a Script Thats Only Paid To get (Premium to get)."
+    })
+
+	    Tabs.Main:AddButton({
+        Title = "Run Script",
+        Description = "Click Here To Run it",
+        Callback = function()
+					print("executedgame1")
+        end
+    })
+
+	Tabs.Game1:AddParagraph({
+        Title = "Script Comming Soon",
+        Content = "This is a Script Comming Soon."
+    })
+
+		Tabs.Game2:AddParagraph({
+        Title = "Script Comming Soon",
+        Content = "This is a Script Comming Soon."
+    })
