@@ -40,7 +40,7 @@ Tabs.Main:AddParagraph({
         Title = "Run Script",
         Description = "Click Here To Run it",
         Callback = function()
-					print("executedgame1")
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/alieegemn/statviewguyme/refs/heads/main/v2"))()
         end
     })
 
