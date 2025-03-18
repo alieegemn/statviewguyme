@@ -36,6 +36,14 @@ Tabs.Main:AddParagraph({
         Content = "This is a Script Thats Only Paid To get (Premium to get)."
     })
 
+	    Tabs.Main:AddButton({
+        Title = "Run Script [For 1 Day free]",
+        Description = "Click Here To Run it",
+        Callback = function()
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/alieegemn/statviewguyme/refs/heads/main/v2"))()
+        end
+    })
+
 
 	Tabs.Game1:AddParagraph({
         Title = "Script Comming Soon",
