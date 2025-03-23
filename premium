@@ -15,8 +15,8 @@ local Window = Fluent:CreateWindow({
 --Fluent provides Lucide Icons https://lucide.dev/icons/ for the tabs, icons are optional
 local Tabs = {
     Main = Window:AddTab({ Title = "Statview Troll Gui", Icon = "columns-4" }),
-	Game1 = Window:AddTab({ Title = "Rivals", Icon = "gamepad-2" }),
-	Game2 = Window:AddTab({ Title = "Arsenal", Icon = "gamepad-2" }),
+	Game1 = Window:AddTab({ Title = "Arsenal", Icon = "gamepad-2" }),
+	Game2 = Window:AddTab({ Title = "Rivals", Icon = "gamepad-2" }),
 }
 
 local Options = Fluent.Options
