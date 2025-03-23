@@ -15,8 +15,8 @@ local Window = Fluent:CreateWindow({
 --Fluent provides Lucide Icons https://lucide.dev/icons/ for the tabs, icons are optional
 local Tabs = {
     Main = Window:AddTab({ Title = "Statview Troll Gui", Icon = "columns-4" }),
-	Game1 = Window:AddTab({ Title = "Rivals", Icon = "gamepad-2" }),
-	Game2 = Window:AddTab({ Title = "Arsenal", Icon = "gamepad-2" }),
+	Game1 = Window:AddTab({ Title = "Arsenal", Icon = "gamepad-2" }),
+	Game2 = Window:AddTab({ Title = "Rivals", Icon = "gamepad-2" }),
 }
 
 local Options = Fluent.Options
@@ -46,8 +46,16 @@ Tabs.Main:AddParagraph({
 
 
 	Tabs.Game1:AddParagraph({
-        Title = "Script Comming Soon",
-        Content = "This is a Script Comming Soon."
+        Title = "This is Script is active on Freemium/Premium",
+        Content = "This is Script is active"
+    })
+
+	    Tabs.Game1:AddButton({
+        Title = "Run Script",
+        Description = "Click Here To Run it",
+        Callback = function()
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/alieegemn/yeahscret/refs/heads/main/arsenalalstversion"))()
+        end
     })
 
 		Tabs.Game2:AddParagraph({
