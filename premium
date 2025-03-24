@@ -32,17 +32,11 @@ do
 end
 
 Tabs.Main:AddParagraph({
-        Title = "Paid Script",
-        Content = "This is a Script Thats Only Paid To get (Premium to get)."
+        Title = "Paid Script IMPORTANT READ! PLEASE JOİN DİSCORD TO GET SCRİPT NEW ANTİ CHEAT İS BYPASSED BUT İT DETECS GUİ SO DM OWNERS TO GET SCRİPT PAİD ONLY",
+        Content = "This is a Script Thats Only Paid To get (Premium to get). IMPORTANT!"
     })
 
-	    Tabs.Main:AddButton({
-        Title = "Run Script",
-        Description = "Click Here To Run it",
-        Callback = function()
-			loadstring(game:HttpGet("https://raw.githubusercontent.com/alieegemn/statviewguyme/refs/heads/main/v2"))()
-        end
-    })
+
 
 	Tabs.Game1:AddParagraph({
         Title = "This is Script is active on Freemium/Premium",
