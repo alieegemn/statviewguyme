@@ -16,7 +16,7 @@ local Window = Fluent:CreateWindow({
 local Tabs = {
     Main = Window:AddTab({ Title = "Statview Troll Gui", Icon = "columns-4" }),
 	Game1 = Window:AddTab({ Title = "Arsenal", Icon = "gamepad-2" }),
-	Game2 = Window:AddTab({ Title = "Rivals", Icon = "gamepad-2" }),
+	Game2 = Window:AddTab({ Title = "ER:LC", Icon = "gamepad-2" }),
 }
 
 local Options = Fluent.Options
@@ -52,6 +52,22 @@ Tabs.Main:AddParagraph({
     })
 
 		Tabs.Game2:AddParagraph({
-        Title = "Script Comming Soon",
-        Content = "This is a Script Comming Soon."
+        Title = "This is Script is active on Freemium/Premium",
+        Content = "Click Here To Run it"
+    })
+
+
+	    Tabs.Game2:AddButton({
+        Title = "Run Script",
+        Description = "Click Here To Run it",
+        Callback = function()
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/alieegemn/yeahscret/refs/heads/main/erlcv1aimbot.md"))()
+    Fluent:Notify({
+        Title = "HOW TO USE",
+        Content = "First hold right click/aim it will lock at person close to your mouse it will be red when it locks",
+        SubContent = "aimbot by HackManHub", -- Optional
+        Duration = 35 -- Set to nil to make the notification not disappear
+    })
+
+        end
     })
