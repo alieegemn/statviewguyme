@@ -710,36 +710,45 @@ local player = Players.LocalPlayer
 local backpack = player:WaitForChild("Backpack")
 local character = player.Character or player.CharacterAdded:Wait()
 
+-- Change this if your tool is named differently
+local handcuffName = "Handcuffs"
+
 while true do
-	local tools = {}
+	local handcuffTool = nil
 
-	-- Collect all tools from Backpack
+	-- Look for handcuffs in backpack
 	for _, tool in ipairs(backpack:GetChildren()) do
-		if tool:IsA("Tool") then
-			table.insert(tools, tool)
+		if tool:IsA("Tool") and tool.Name == handcuffName then
+			handcuffTool = tool
+			break
 		end
 	end
 
-	-- Collect tools in Character
+	-- Or look for it in character
+	if not handcuffTool then
+		for _, tool in ipairs(character:GetChildren()) do
+			if tool:IsA("Tool") and tool.Name == handcuffName then
+				handcuffTool = tool
+				break
+			end
+		end
+	end
+
+	-- If player is not holding the handcuff, force equip it
+	local holding = false
 	for _, tool in ipairs(character:GetChildren()) do
-		if tool:IsA("Tool") then
-			table.insert(tools, tool)
+		if tool:IsA("Tool") and tool.Name == handcuffName then
+			holding = true
+			break
 		end
 	end
 
-	-- Equip and unequip each tool quickly
-	for _, tool in ipairs(tools) do
-		if tool and tool.Parent then
-			tool.Parent = character
-			task.wait(0) -- Slight delay for visual effect
-			tool.Parent = backpack
-			task.wait(0)
-		end
+	if handcuffTool and not holding then
+		handcuffTool.Parent = character
 	end
 
-	task.wait(0.1) -- Short break before repeating
+	task.wait(0.05) -- Fast loop, but not too aggressive
 end
-
 
 	end,
  })
