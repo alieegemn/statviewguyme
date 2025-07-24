@@ -229,35 +229,36 @@ local player = Players.LocalPlayer
 local backpack = player:WaitForChild("Backpack")
 local character = player.Character or player.CharacterAdded:Wait()
 
-local run = true -- Set to false to stop the loop
+local run = true -- You can set this to false later to stop the loop
 
 task.spawn(function()
 	while run do
-		local tools = {} -- Collect all tools
+		local tools = {}
+
+		-- Collect tools from Backpack
 		for _, tool in ipairs(backpack:GetChildren()) do
 			if tool:IsA("Tool") then
 				table.insert(tools, tool)
 			end
 		end
 
-		-- Also include tools already equipped (in character)
+		-- Collect tools already in Character
 		for _, tool in ipairs(character:GetChildren()) do
 			if tool:IsA("Tool") then
 				table.insert(tools, tool)
 			end
 		end
 
+		-- Rapidly equip each tool
 		for _, tool in ipairs(tools) do
 			if tool and tool.Parent then
-				-- Equip the tool
 				tool.Parent = character
-				wait(0.3) -- Wait while holding tool
+				task.wait(0.05) -- Extremely fast hold
 				tool.Parent = backpack
-				wait(0.1) -- Short pause between tools
 			end
 		end
 
-		wait(0.5) -- Pause before looping again
+		task.wait(0.05) -- Minimal wait before starting next loop
 	end
 end)
 
