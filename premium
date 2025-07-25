@@ -91,6 +91,3 @@ Tabs.Main:AddParagraph({
 			loadstring(game:HttpGet("https://raw.githubusercontent.com/alieegemn/yeahscret/refs/heads/main/p2wpaytowinscript.txt"))()
         end
     })
-
-        end
-    })
