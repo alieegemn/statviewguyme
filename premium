@@ -60,7 +60,7 @@ Tabs.Main:AddParagraph({
 
 		Tabs.Game2:AddParagraph({
         Title = "This is Script is active on Freemium/Premium",
-        Content = "Click Here To Run it"
+        Content = "WARNING THIS SCRIPT MAYBE BROKEN"
     })
 
 
