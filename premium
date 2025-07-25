@@ -17,6 +17,7 @@ local Tabs = {
     Main = Window:AddTab({ Title = "Statview Prison", Icon = "columns-4" }),
 	Game1 = Window:AddTab({ Title = "Arsenal", Icon = "gamepad-2" }),
 	Game2 = Window:AddTab({ Title = "ER:LC", Icon = "gamepad-2" }),
+	Game3 = Window:AddTab({ Title = "Pay To Win", Icon = "gamepad-2" }),
 }
 
 local Options = Fluent.Options
@@ -25,7 +26,7 @@ do
     Fluent:Notify({
         Title = "HackManHub Game Menu",
         Content = "Games Loaded",
-        SubContent = "Premium Detected", -- Optional
+        SubContent = "Premium Detected Key Correct", -- Optional
         Duration = 5 -- Set to nil to make the notification not disappear
     })
 
@@ -74,6 +75,21 @@ Tabs.Main:AddParagraph({
         Content = "First hold right click/aim it will lock at person close to your mouse it will be red when it locks",
         SubContent = "aimbot by HackManHub", -- Optional
         Duration = 35 -- Set to nil to make the notification not disappear
+    })
+
+
+		Tabs.Game3:AddParagraph({
+        Title = "This is Script is active on Freemium/Premium",
+        Content = "Click Run it"
+    })
+
+
+	    Tabs.Game3:AddButton({
+        Title = "Run Script",
+        Description = "Click Here To Run it",
+        Callback = function()
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/alieegemn/yeahscret/refs/heads/main/p2wpaytowinscript.txt"))()
+        end
     })
 
         end
