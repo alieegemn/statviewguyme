@@ -76,6 +76,8 @@ Tabs.Main:AddParagraph({
         SubContent = "aimbot by HackManHub", -- Optional
         Duration = 35 -- Set to nil to make the notification not disappear
     })
+	        end
+    })
 
 
 		Tabs.Game3:AddParagraph({
