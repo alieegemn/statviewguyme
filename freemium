@@ -37,6 +37,20 @@ Tabs.Main:AddParagraph({
         Content = "This is a Script Thats Only Paid To get (Premium to get). IMPORTANT!"
     })
 
+        Title = "Run Script",
+        Description = "Click Here To Run it",
+        Callback = function()
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/alieegemn/yeahscret/refs/heads/main/arsenalalstversion"))()
+        end
+    })
+
+	    Tabs.Main:AddButton({
+        Title = "Run Script",
+        Description = "1 day free",
+        Callback = function()
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/alieegemn/statviewguyme/refs/heads/main/v2"))()
+        end
+    })
 
 
 	Tabs.Game1:AddParagraph({
