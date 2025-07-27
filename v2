@@ -66,16 +66,6 @@ NewCategory:CreateButton({
     end,
 })
 
-MainTab:CreateButton({
-    Name = "Jail (CUFF PLAYER)",
-    Callback = function()
-        local player = game.Players.LocalPlayer
-        if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-            player.Character.HumanoidRootPart.CFrame = CFrame.new(-49998, 4, -406) 
-        end
-    end,
-})
-
 NewCategory:CreateButton({
     Name = "Control room",
     Callback = function()
@@ -200,6 +190,17 @@ game.Players.LocalPlayer.Character.Humanoid.HipHeight = 00
 
 	end,
  })
+
+MainTab:CreateButton({
+    Name = "Jail (CUFF PLAYER)",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            player.Character.HumanoidRootPart.CFrame = CFrame.new(-49998, 4, -406) 
+        end
+    end,
+})
+
 
  local Slider = AntiCheatTab:CreateSlider({
 	Name = "Walkspeed",
