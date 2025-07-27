@@ -9,8 +9,8 @@ local MainWindow = Rayfield:CreateWindow({
 	LoadingSubtitle = "by HackManHub",
 	ConfigurationSaving = {
 	   Enabled = true,
-	   FolderName = nil, -- Create a custom folder for your hub/game
-	   FileName = "Test"
+	   FolderName = hackManHubStatviewPrison, -- Create a custom folder for your hub/game
+	   FileName = "HackManHub"
 	},
 	Discord = {
 	   Enabled = true,
@@ -65,6 +65,17 @@ NewCategory:CreateButton({
         end
     end,
 })
+
+MainTab:CreateButton({
+    Name = "Jail (CUFF PLAYER)",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            player.Character.HumanoidRootPart.CFrame = CFrame.new(-49998, 4, -406) 
+        end
+    end,
+})
+
 NewCategory:CreateButton({
     Name = "Control room",
     Callback = function()
