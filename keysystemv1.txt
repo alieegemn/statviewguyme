@@ -1,28 +1,23 @@
---===[ Ov2.5 Client Key Validation with GUI ]===--
+--===[ Ov2.5 Client Key Validation with GUI (HttpGet version) ]===--
 
 local Players = game:GetService("Players")
-local HttpService = game:GetService("HttpService")
 local Player = Players.LocalPlayer
 local PlayerGui = Player:WaitForChild("PlayerGui")
 
 -- CONFIGURATION
 local Identifier = "hackmanhubreal" -- Replace with your Panda Dev service identifier
 
--- Utility function to validate key with server
+-- Validate key by calling the validation URL with HttpGet
 local function ValidateKey(key, serviceId, hwid)
     local validationUrl = "https://pandadevelopment.net/v2_validation?key=" .. tostring(key) .. "&service=" .. tostring(serviceId) .. "&hwid=" .. tostring(hwid)
-    local success, response = pcall(function()
-        return HttpService:RequestAsync({
-            Url = validationUrl,
-            Method = "GET"
-        })
+    local success, responseBody = pcall(function()
+        return game:HttpGet(validationUrl)
     end)
-
-    if success and response and response.Success then
-        local decodeSuccess, jsonData = pcall(function()
-            return HttpService:JSONDecode(response.Body)
+    if success and responseBody then
+        local successDecode, jsonData = pcall(function()
+            return game:GetService("HttpService"):JSONDecode(responseBody)
         end)
-        if decodeSuccess and jsonData then
+        if successDecode and jsonData then
             if jsonData["V2_Authentication"] == "success" then
                 return true, "Authenticated"
             else
@@ -32,10 +27,8 @@ local function ValidateKey(key, serviceId, hwid)
         else
             return false, "JSON decode error"
         end
-    elseif response then
-        return false, "HTTP error: " .. tostring(response.StatusMessage)
     else
-        return false, "Request failed"
+        return false, "HTTP request failed or blocked"
     end
 end
 
@@ -60,7 +53,6 @@ local function CreateValidationGUI()
     local uicorner = Instance.new("UICorner", frame)
     uicorner.CornerRadius = UDim.new(0, 10)
 
-    -- Title
     local title = Instance.new("TextLabel", frame)
     title.Size = UDim2.new(1, 0, 0, 30)
     title.Position = UDim2.new(0, 0, 0, 5)
@@ -71,7 +63,6 @@ local function CreateValidationGUI()
     title.TextColor3 = Color3.fromRGB(255, 255, 255)
     title.TextScaled = false
 
-    -- Info / link label
     local linkLabel = Instance.new("TextLabel", frame)
     linkLabel.Size = UDim2.new(1, -20, 0, 30)
     linkLabel.Position = UDim2.new(0, 10, 0, 40)
@@ -86,7 +77,6 @@ local function CreateValidationGUI()
     local keyLink = GetKeyLink(Identifier, userHWID)
     linkLabel.Text = "Get your key here:\n" .. keyLink
 
-    -- TextBox for key input
     local keyBox = Instance.new("TextBox", frame)
     keyBox.Size = UDim2.new(1, -20, 0, 30)
     keyBox.Position = UDim2.new(0, 10, 0, 80)
@@ -101,7 +91,6 @@ local function CreateValidationGUI()
     local keyBoxCorner = Instance.new("UICorner", keyBox)
     keyBoxCorner.CornerRadius = UDim.new(0, 6)
 
-    -- Status Label
     local statusLabel = Instance.new("TextLabel", frame)
     statusLabel.Size = UDim2.new(1, -20, 0, 30)
     statusLabel.Position = UDim2.new(0, 10, 0, 120)
@@ -111,7 +100,6 @@ local function CreateValidationGUI()
     statusLabel.Font = Enum.Font.Gotham
     statusLabel.TextSize = 16
 
-    -- Validate Button
     local submitBtn = Instance.new("TextButton", frame)
     submitBtn.Size = UDim2.new(1, -20, 0, 30)
     submitBtn.Position = UDim2.new(0, 10, 0, 150)
@@ -125,7 +113,6 @@ local function CreateValidationGUI()
     local submitBtnCorner = Instance.new("UICorner", submitBtn)
     submitBtnCorner.CornerRadius = UDim.new(0, 6)
 
-    -- Button Click Event
     submitBtn.MouseButton1Click:Connect(function()
         local userKey = keyBox.Text
         if userKey == "" then
@@ -137,7 +124,6 @@ local function CreateValidationGUI()
         statusLabel.TextColor3 = Color3.fromRGB(255, 255, 100)
         statusLabel.Text = "🔍 Validating..."
 
-        -- Validate async to avoid freeze
         local validated, message = ValidateKey(userKey, Identifier, userHWID)
 
         if validated then
@@ -145,7 +131,7 @@ local function CreateValidationGUI()
             statusLabel.Text = "✅ Key valid! Welcome."
             wait(1)
             screenGui:Destroy()
-            -- Your main script goes here
+            -- Your main script here
             print("User authenticated, proceed with main script.")
         else
             statusLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
