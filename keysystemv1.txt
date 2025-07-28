@@ -1,26 +1,16 @@
---===[ Ov2.5 - Open Source Client Key Validation ]===--
+--===[ Ov2.5 Client Key Validation with GUI ]===--
 
--- CONFIGURATION
-local Identifier = "hackmanhubreal" -- Replace with your Panda Dev service identifier
-local UserKey = "ff4ddd0967eb8a5912c6a3c56" -- Will be filled from user input, e.g., GUI TextBox or saved data
-
--- Roblox Services
 local Players = game:GetService("Players")
 local HttpService = game:GetService("HttpService")
+local Player = Players.LocalPlayer
+local PlayerGui = Player:WaitForChild("PlayerGui")
 
--- Hardware ID (HWID) - using Player.UserId here (not super secure but simple)
-local localPlayer = Players.LocalPlayer
-local UserID_HWID = localPlayer.UserId
+-- CONFIGURATION
+local Identifier = "Your_Identifier" -- Replace with your Panda Dev service identifier
 
--- Function to validate the key with Panda Development
+-- Utility function to validate key with server
 local function ValidateKey(key, serviceId, hwid)
-    if not HttpService then
-        warn("[Ov2.5] HttpService not available.")
-        return false, "HttpService not available"
-    end
-
     local validationUrl = "https://pandadevelopment.net/v2_validation?key=" .. tostring(key) .. "&service=" .. tostring(serviceId) .. "&hwid=" .. tostring(hwid)
-
     local success, response = pcall(function()
         return HttpService:RequestAsync({
             Url = validationUrl,
@@ -28,61 +18,140 @@ local function ValidateKey(key, serviceId, hwid)
         })
     end)
 
-    if success and response then
-        if response.Success then
-            local decodeSuccess, jsonData = pcall(function()
-                return HttpService:JSONDecode(response.Body)
-            end)
-
-            if decodeSuccess and jsonData then
-                if jsonData["V2_Authentication"] == "success" then
-                    print("[Ov2.5] Authenticated successfully.")
-                    return true, "Authenticated"
-                else
-                    local reason = jsonData["reason"] or "Unknown reason"
-                    print("[Ov2.5] Authentication failed. Reason: " .. reason)
-                    return false, "Authentication failed: " .. reason
-                end
+    if success and response and response.Success then
+        local decodeSuccess, jsonData = pcall(function()
+            return HttpService:JSONDecode(response.Body)
+        end)
+        if decodeSuccess and jsonData then
+            if jsonData["V2_Authentication"] == "success" then
+                return true, "Authenticated"
             else
-                warn("[Ov2.5] Failed to decode JSON response.")
-                return false, "JSON decode error"
+                local reason = jsonData["reason"] or "Unknown reason"
+                return false, "Authentication failed: " .. reason
             end
         else
-            warn("[Ov2.5] HTTP request failed. Status code: " .. tostring(response.StatusCode) .. " Message: " .. response.StatusMessage)
-            return false, "HTTP request failed: " .. response.StatusMessage
+            return false, "JSON decode error"
         end
+    elseif response then
+        return false, "HTTP error: " .. tostring(response.StatusMessage)
     else
-        warn("[Ov2.5] RequestAsync failed: " .. tostring(response))
-        return false, "Request error"
+        return false, "Request failed"
     end
 end
 
--- Function to generate the key retrieval URL for the user
 local function GetKeyLink(serviceId, hwid)
     return "https://pandadevelopment.net/getkey?service=" .. tostring(serviceId) .. "&hwid=" .. tostring(hwid)
 end
 
--- === USAGE EXAMPLE ===
+-- Create the GUI
+local function CreateValidationGUI()
+    local screenGui = Instance.new("ScreenGui")
+    screenGui.Name = "Ov25_KeyValidationGUI"
+    screenGui.ResetOnSpawn = false
+    screenGui.Parent = PlayerGui
 
--- Print key retrieval link so user knows where to get the key
-local keyLink = GetKeyLink(Identifier, UserID_HWID)
-print("To get your key, visit: " .. keyLink)
+    local frame = Instance.new("Frame", screenGui)
+    frame.Size = UDim2.new(0, 400, 0, 180)
+    frame.Position = UDim2.new(0.5, -200, 0.5, -90)
+    frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    frame.BorderSizePixel = 0
+    frame.AnchorPoint = Vector2.new(0.5, 0.5)
 
--- TODO: Replace below with your actual method to get the UserKey, e.g., GUI input
--- For testing, you can assign a valid key here manually:
--- UserKey = "your_valid_key_here"
+    local uicorner = Instance.new("UICorner", frame)
+    uicorner.CornerRadius = UDim.new(0, 10)
 
-if UserKey == "" then
-    warn("[Ov2.5] UserKey is empty. Please get your key from the link above and set UserKey.")
-else
-    print("[Ov2.5] Validating key...")
-    local isValid, message = ValidateKey(UserKey, Identifier, UserID_HWID)
+    -- Title
+    local title = Instance.new("TextLabel", frame)
+    title.Size = UDim2.new(1, 0, 0, 30)
+    title.Position = UDim2.new(0, 0, 0, 5)
+    title.BackgroundTransparency = 1
+    title.Text = "Enter your Panda Ov2.5 Key"
+    title.Font = Enum.Font.GothamBold
+    title.TextSize = 22
+    title.TextColor3 = Color3.fromRGB(255, 255, 255)
+    title.TextScaled = false
 
-    if isValid then
-        print("[Ov2.5] Key is valid! Proceed with your script.")
-        -- Your main script logic here
-    else
-        print("[Ov2.5] Key is invalid: " .. message)
-        -- Handle invalid key (e.g., kick player, notify, stop script)
-    end
+    -- Info / link label
+    local linkLabel = Instance.new("TextLabel", frame)
+    linkLabel.Size = UDim2.new(1, -20, 0, 30)
+    linkLabel.Position = UDim2.new(0, 10, 0, 40)
+    linkLabel.BackgroundTransparency = 1
+    linkLabel.TextColor3 = Color3.fromRGB(120, 180, 255)
+    linkLabel.TextWrapped = true
+    linkLabel.TextXAlignment = Enum.TextXAlignment.Left
+    linkLabel.Font = Enum.Font.Gotham
+    linkLabel.TextSize = 14
+
+    local userHWID = tostring(Player.UserId)
+    local keyLink = GetKeyLink(Identifier, userHWID)
+    linkLabel.Text = "Get your key here:\n" .. keyLink
+
+    -- TextBox for key input
+    local keyBox = Instance.new("TextBox", frame)
+    keyBox.Size = UDim2.new(1, -20, 0, 30)
+    keyBox.Position = UDim2.new(0, 10, 0, 80)
+    keyBox.PlaceholderText = "Paste your key here..."
+    keyBox.ClearTextOnFocus = false
+    keyBox.Text = ""
+    keyBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    keyBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+    keyBox.Font = Enum.Font.Gotham
+    keyBox.TextSize = 18
+
+    local keyBoxCorner = Instance.new("UICorner", keyBox)
+    keyBoxCorner.CornerRadius = UDim.new(0, 6)
+
+    -- Status Label
+    local statusLabel = Instance.new("TextLabel", frame)
+    statusLabel.Size = UDim2.new(1, -20, 0, 30)
+    statusLabel.Position = UDim2.new(0, 10, 0, 120)
+    statusLabel.BackgroundTransparency = 1
+    statusLabel.Text = ""
+    statusLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
+    statusLabel.Font = Enum.Font.Gotham
+    statusLabel.TextSize = 16
+
+    -- Validate Button
+    local submitBtn = Instance.new("TextButton", frame)
+    submitBtn.Size = UDim2.new(1, -20, 0, 30)
+    submitBtn.Position = UDim2.new(0, 10, 0, 150)
+    submitBtn.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+    submitBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    submitBtn.Font = Enum.Font.GothamBold
+    submitBtn.TextSize = 18
+    submitBtn.Text = "Validate Key"
+    submitBtn.AutoButtonColor = true
+
+    local submitBtnCorner = Instance.new("UICorner", submitBtn)
+    submitBtnCorner.CornerRadius = UDim.new(0, 6)
+
+    -- Button Click Event
+    submitBtn.MouseButton1Click:Connect(function()
+        local userKey = keyBox.Text
+        if userKey == "" then
+            statusLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
+            statusLabel.Text = "❌ Please enter a key!"
+            return
+        end
+
+        statusLabel.TextColor3 = Color3.fromRGB(255, 255, 100)
+        statusLabel.Text = "🔍 Validating..."
+
+        -- Validate async to avoid freeze
+        local validated, message = ValidateKey(userKey, Identifier, userHWID)
+
+        if validated then
+            statusLabel.TextColor3 = Color3.fromRGB(100, 255, 100)
+            statusLabel.Text = "✅ Key valid! Welcome."
+            wait(1)
+            screenGui:Destroy()
+            -- Your main script goes here
+            print("User authenticated, proceed with main script.")
+        else
+            statusLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
+            statusLabel.Text = "❌ Invalid key: " .. message
+        end
+    end)
 end
+
+CreateValidationGUI()
