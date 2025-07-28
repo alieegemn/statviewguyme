@@ -92,7 +92,7 @@ local function CreateValidationGUI()
 
     local userHWID = tostring(Player.UserId)
     local keyLink = GetKeyLink(Identifier, userHWID)
-    linkLabel.Text = "Click Copy Key Link | Join Discord https://discord.gg/KmtXAzbDTy | BETA "
+    linkLabel.Text = "Click Copy Key Link To Get Key Link | BETA "
 
     -- COPY BUTTON
     local copyBtn = Instance.new("TextButton", frame)
