@@ -1,0 +1,97 @@
+--===[ Panda V3 - Client Key Auth Script ]===--
+
+-- Panda Library is embedded via Virtual Script Storage
+-- This script only works correctly AFTER upload to Panda VSS
+
+-- Configuration
+local __PELINDA_SERVICE__ = "hackmanhubreal" -- 🔁 Replace with your Panda service name
+local __PELINDA_SILENTMODE__ = false
+local __PELINDA_SECURITY_LEVEL__ = 1
+
+-- GUI + Pelinda Integration
+local Players = game:GetService("Players")
+local PlayerGui = Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Function to generate key link
+local function GetKeyLink()
+    return Pelinda.GetKeyLink({
+        Service = __PELINDA_SERVICE__
+    })
+end
+
+-- Create Key UI
+local function CreateKeyGUI()
+    local screenGui = Instance.new("ScreenGui", PlayerGui)
+    screenGui.Name = "PandaV3_KeyPrompt"
+
+    local frame = Instance.new("Frame", screenGui)
+    frame.Size = UDim2.new(0, 320, 0, 160)
+    frame.Position = UDim2.new(0, 30, 1, -180)
+    frame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    frame.BorderSizePixel = 0
+    Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 8)
+
+    local keyBox = Instance.new("TextBox", frame)
+    keyBox.PlaceholderText = "Enter your key..."
+    keyBox.Size = UDim2.new(0.9, 0, 0, 30)
+    keyBox.Position = UDim2.new(0.05, 0, 0.4, 0)
+    keyBox.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    keyBox.TextColor3 = Color3.new(1, 1, 1)
+    keyBox.Text = ""
+    keyBox.ClearTextOnFocus = false
+    Instance.new("UICorner", keyBox).CornerRadius = UDim.new(0, 6)
+
+    local submit = Instance.new("TextButton", frame)
+    submit.Text = "✅ Validate"
+    submit.Size = UDim2.new(0.9, 0, 0, 30)
+    submit.Position = UDim2.new(0.05, 0, 0.7, 0)
+    submit.BackgroundColor3 = Color3.fromRGB(0, 160, 255)
+    submit.TextColor3 = Color3.new(1, 1, 1)
+    Instance.new("UICorner", submit).CornerRadius = UDim.new(0, 6)
+
+    local status = Instance.new("TextLabel", frame)
+    status.Size = UDim2.new(0.9, 0, 0, 20)
+    status.Position = UDim2.new(0.05, 0, 0.1, 0)
+    status.Text = "🔑 Get your key below."
+    status.TextColor3 = Color3.new(1, 1, 1)
+    status.BackgroundTransparency = 1
+    status.TextScaled = true
+
+    local link = GetKeyLink()
+    if setclipboard then
+        setclipboard(link)
+        status.Text = "📋 Key URL copied! Paste in browser."
+    else
+        status.Text = "🔗 Get your key: " .. link
+    end
+
+    submit.MouseButton1Click:Connect(function()
+        local inputKey = keyBox.Text
+        if inputKey == "" then
+            status.Text = "❌ Please enter a key!"
+            return
+        end
+
+        status.Text = "🔍 Validating..."
+        local result = Pelinda.Init({
+            Service = __PELINDA_SERVICE__,
+            SilentMode = __PELINDA_SILENTMODE__,
+            Key = inputKey,
+            SecurityLevel = __PELINDA_SECURITY_LEVEL__
+        })
+
+        if result == "validated!!" then
+            status.Text = "✅ Key Valid! Welcome."
+            wait(1)
+            screenGui:Destroy()
+
+            -- Place your main script here
+            print("hi")
+        else
+            status.Text = "❌ Invalid Key: " .. result
+        end
+    end)
+end
+
+-- Run GUI
+CreateKeyGUI()
