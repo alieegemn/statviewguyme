@@ -6,7 +6,7 @@ local Player = Players.LocalPlayer
 local PlayerGui = Player:WaitForChild("PlayerGui")
 
 -- CONFIGURATION
-local Identifier = "Your_Identifier" -- Replace with your Panda Dev service identifier
+local Identifier = "hackmanhubreal" -- Replace with your Panda Dev service identifier
 
 -- Utility function to validate key with server
 local function ValidateKey(key, serviceId, hwid)
