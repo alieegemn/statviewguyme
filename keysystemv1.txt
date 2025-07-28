@@ -1,114 +1,88 @@
---===[ Panda V3 - Client Key Auth Script ]===--
+--===[ Ov2.5 - Open Source Client Key Validation ]===--
 
--- MOCK Pelinda for local testing (REMOVE after uploading to Panda VSS)
-local Pelinda = Pelinda or {}
+-- CONFIGURATION
+local Identifier = "hackmanhubreal" -- Replace with your Panda Dev service identifier
+local UserKey = "ff4ddd0967eb8a5912c6a3c56" -- Will be filled from user input, e.g., GUI TextBox or saved data
 
-if not Pelinda.GetKeyLink then
-    function Pelinda.GetKeyLink(opts)
-        return "https://pandav3.link/getkey?service=" .. tostring(opts.Service or "unknown")
-    end
-end
-
-if not Pelinda.Init then
-    function Pelinda.Init(opts)
-        -- For testing, accept "validkey" as a valid key
-        if opts.Key == "validkey" then
-            return "validated!!"
-        else
-            return "invalid"
-        end
-    end
-end
-
--- Configuration
-local __PELINDA_SERVICE__ = "hackmanhubreal" -- 🔁 Replace with your Panda service name
-local __PELINDA_SILENTMODE__ = false
-local __PELINDA_SECURITY_LEVEL__ = 1
-
--- GUI + Pelinda Integration
+-- Roblox Services
 local Players = game:GetService("Players")
-local PlayerGui = Players.LocalPlayer:WaitForChild("PlayerGui")
+local HttpService = game:GetService("HttpService")
 
--- Function to generate key link
-local function GetKeyLink()
-    return Pelinda.GetKeyLink({
-        Service = __PELINDA_SERVICE__
-    })
-end
+-- Hardware ID (HWID) - using Player.UserId here (not super secure but simple)
+local localPlayer = Players.LocalPlayer
+local UserID_HWID = localPlayer.UserId
 
--- Create Key UI
-local function CreateKeyGUI()
-    local screenGui = Instance.new("ScreenGui", PlayerGui)
-    screenGui.Name = "PandaV3_KeyPrompt"
-
-    local frame = Instance.new("Frame", screenGui)
-    frame.Size = UDim2.new(0, 320, 0, 160)
-    frame.Position = UDim2.new(0, 30, 1, -180)
-    frame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-    frame.BorderSizePixel = 0
-    Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 8)
-
-    local keyBox = Instance.new("TextBox", frame)
-    keyBox.PlaceholderText = "Enter your key..."
-    keyBox.Size = UDim2.new(0.9, 0, 0, 30)
-    keyBox.Position = UDim2.new(0.05, 0, 0.4, 0)
-    keyBox.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-    keyBox.TextColor3 = Color3.new(1, 1, 1)
-    keyBox.Text = ""
-    keyBox.ClearTextOnFocus = false
-    Instance.new("UICorner", keyBox).CornerRadius = UDim.new(0, 6)
-
-    local submit = Instance.new("TextButton", frame)
-    submit.Text = "✅ Validate"
-    submit.Size = UDim2.new(0.9, 0, 0, 30)
-    submit.Position = UDim2.new(0.05, 0, 0.7, 0)
-    submit.BackgroundColor3 = Color3.fromRGB(0, 160, 255)
-    submit.TextColor3 = Color3.new(1, 1, 1)
-    Instance.new("UICorner", submit).CornerRadius = UDim.new(0, 6)
-
-    local status = Instance.new("TextLabel", frame)
-    status.Size = UDim2.new(0.9, 0, 0, 20)
-    status.Position = UDim2.new(0.05, 0, 0.1, 0)
-    status.Text = "🔑 Get your key below."
-    status.TextColor3 = Color3.new(1, 1, 1)
-    status.BackgroundTransparency = 1
-    status.TextScaled = true
-
-    local link = GetKeyLink()
-    if setclipboard then
-        setclipboard(link)
-        status.Text = "📋 Key URL copied! Paste in browser."
-    else
-        status.Text = "🔗 Get your key: " .. link
+-- Function to validate the key with Panda Development
+local function ValidateKey(key, serviceId, hwid)
+    if not HttpService then
+        warn("[Ov2.5] HttpService not available.")
+        return false, "HttpService not available"
     end
 
-    submit.MouseButton1Click:Connect(function()
-        local inputKey = keyBox.Text
-        if inputKey == "" then
-            status.Text = "❌ Please enter a key!"
-            return
-        end
+    local validationUrl = "https://pandadevelopment.net/v2_validation?key=" .. tostring(key) .. "&service=" .. tostring(serviceId) .. "&hwid=" .. tostring(hwid)
 
-        status.Text = "🔍 Validating..."
-        local result = Pelinda.Init({
-            Service = __PELINDA_SERVICE__,
-            SilentMode = __PELINDA_SILENTMODE__,
-            Key = inputKey,
-            SecurityLevel = __PELINDA_SECURITY_LEVEL__
+    local success, response = pcall(function()
+        return HttpService:RequestAsync({
+            Url = validationUrl,
+            Method = "GET"
         })
-
-        if result == "validated!!" then
-            status.Text = "✅ Key Valid! Welcome."
-            wait(1)
-            screenGui:Destroy()
-
-            -- Place your main script here
-            print("hi")
-        else
-            status.Text = "❌ Invalid Key: " .. result
-        end
     end)
+
+    if success and response then
+        if response.Success then
+            local decodeSuccess, jsonData = pcall(function()
+                return HttpService:JSONDecode(response.Body)
+            end)
+
+            if decodeSuccess and jsonData then
+                if jsonData["V2_Authentication"] == "success" then
+                    print("[Ov2.5] Authenticated successfully.")
+                    return true, "Authenticated"
+                else
+                    local reason = jsonData["reason"] or "Unknown reason"
+                    print("[Ov2.5] Authentication failed. Reason: " .. reason)
+                    return false, "Authentication failed: " .. reason
+                end
+            else
+                warn("[Ov2.5] Failed to decode JSON response.")
+                return false, "JSON decode error"
+            end
+        else
+            warn("[Ov2.5] HTTP request failed. Status code: " .. tostring(response.StatusCode) .. " Message: " .. response.StatusMessage)
+            return false, "HTTP request failed: " .. response.StatusMessage
+        end
+    else
+        warn("[Ov2.5] RequestAsync failed: " .. tostring(response))
+        return false, "Request error"
+    end
 end
 
--- Run GUI
-CreateKeyGUI()
+-- Function to generate the key retrieval URL for the user
+local function GetKeyLink(serviceId, hwid)
+    return "https://pandadevelopment.net/getkey?service=" .. tostring(serviceId) .. "&hwid=" .. tostring(hwid)
+end
+
+-- === USAGE EXAMPLE ===
+
+-- Print key retrieval link so user knows where to get the key
+local keyLink = GetKeyLink(Identifier, UserID_HWID)
+print("To get your key, visit: " .. keyLink)
+
+-- TODO: Replace below with your actual method to get the UserKey, e.g., GUI input
+-- For testing, you can assign a valid key here manually:
+-- UserKey = "your_valid_key_here"
+
+if UserKey == "" then
+    warn("[Ov2.5] UserKey is empty. Please get your key from the link above and set UserKey.")
+else
+    print("[Ov2.5] Validating key...")
+    local isValid, message = ValidateKey(UserKey, Identifier, UserID_HWID)
+
+    if isValid then
+        print("[Ov2.5] Key is valid! Proceed with your script.")
+        -- Your main script logic here
+    else
+        print("[Ov2.5] Key is invalid: " .. message)
+        -- Handle invalid key (e.g., kick player, notify, stop script)
+    end
+end
