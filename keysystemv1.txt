@@ -1,7 +1,24 @@
 --===[ Panda V3 - Client Key Auth Script ]===--
 
--- Panda Library is embedded via Virtual Script Storage
--- This script only works correctly AFTER upload to Panda VSS
+-- MOCK Pelinda for local testing (REMOVE after uploading to Panda VSS)
+local Pelinda = Pelinda or {}
+
+if not Pelinda.GetKeyLink then
+    function Pelinda.GetKeyLink(opts)
+        return "https://pandav3.link/getkey?service=" .. tostring(opts.Service or "unknown")
+    end
+end
+
+if not Pelinda.Init then
+    function Pelinda.Init(opts)
+        -- For testing, accept "validkey" as a valid key
+        if opts.Key == "validkey" then
+            return "validated!!"
+        else
+            return "invalid"
+        end
+    end
+end
 
 -- Configuration
 local __PELINDA_SERVICE__ = "hackmanhubreal" -- 🔁 Replace with your Panda service name
