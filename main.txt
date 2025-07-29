@@ -18,6 +18,7 @@ local Tabs = {
 	Game1 = Window:AddTab({ Title = "Arsenal", Icon = "gamepad-2" }),
 	Game2 = Window:AddTab({ Title = "Murderers VS Sheriffs", Icon = "gamepad-2" }),
 	Game3 = Window:AddTab({ Title = "99 Nights in the Forest", Icon = "gamepad-2" }),
+	Game4 = Window:AddTab({ Title = "Grow A Garden", Icon = "gamepad-2" }),
 }
 
 local Options = Fluent.Options
@@ -88,3 +89,19 @@ Tabs.Main:AddParagraph({
 			loadstring(game:HttpGet("https://raw.githubusercontent.com/alieegemn/yeahscret/refs/heads/main/99nightof.txt"))()
         end
     })
+
+
+		Tabs.Game4:AddParagraph({
+        Title = "This is Script is active on Freemium/Premium",
+        Content = "Click Run it"
+    })
+
+
+	    Tabs.Game4:AddButton({
+        Title = "Run Script",
+        Description = "Click Here To Run it",
+        Callback = function()
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/alieegemn/yeahscret/refs/heads/main/gagscriptopcool.txt"))()
+        end
+    })
+
