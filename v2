@@ -192,11 +192,40 @@ game.Players.LocalPlayer.Character.Humanoid.HipHeight = 00
  })
 
 MainTab:CreateButton({
-    Name = "Jail (CUFF PLAYER)",
+    Name = "Max Security a Player (CUFF PLAYER)",
     Callback = function()
+	--[[
+	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+]]
+local Noclip = nil
+local Clip = nil
+
+function noclip()
+	Clip = false
+	local function Nocl()
+		if Clip == false and game.Players.LocalPlayer.Character ~= nil then
+			for _,v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+				if v:IsA('BasePart') and v.CanCollide and v.Name ~= floatName then
+					v.CanCollide = false
+				end
+			end
+		end
+		wait(0.21) -- basic optimization
+	end
+	Noclip = game:GetService('RunService').Stepped:Connect(Nocl)
+end
+
+function clip()
+	if Noclip then Noclip:Disconnect() end
+	Clip = true
+end
+
+noclip()
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-2211.716064, 33.623806, -793.964417)
 wait(0.5)
 game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(750, 0, 100)
+
+wait(0.5)
 
 local function unequipTool(player)
     local character = player.Character
@@ -246,6 +275,10 @@ button.MouseButton1Click:Connect(function()
     unequipAllTools()
 end)
 --]]
+clip()
+wait(0.5)
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-2247.786621, 34.553097, -792.277649)
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-2247.786621, 34.553097, -792.277649)
     end,
 })
 
