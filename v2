@@ -221,6 +221,24 @@ function clip()
 end
 
 noclip()
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 1000
+local Players = game:GetService("Players")
+
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+
+-- Target position to walk to
+local targetPosition = Vector3.new(-2211.716064, 33.623806, -793.964417)
+
+-- Move the character to that position
+humanoid:MoveTo(targetPosition)
+
+wait(0.5)
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+
+wait(1)
+
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-2211.716064, 33.623806, -793.964417)
 wait(0.5)
 game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(750, 0, 100)
