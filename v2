@@ -194,10 +194,58 @@ game.Players.LocalPlayer.Character.Humanoid.HipHeight = 00
 MainTab:CreateButton({
     Name = "Jail (CUFF PLAYER)",
     Callback = function()
-        local player = game.Players.LocalPlayer
-        if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-            player.Character.HumanoidRootPart.CFrame = CFrame.new(-49998, 4, -406) 
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-2211.716064, 33.623806, -793.964417)
+wait(0.5)
+game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(750, 0, 100)
+
+local function unequipTool(player)
+    local character = player.Character
+    if character then
+        local humanoid = character:FindFirstChild("Humanoid")
+        if humanoid then
+            humanoid:UnequipTools()
         end
+    end
+end
+
+-- Example usage (unequip the tool of the player who runs the script):
+local player = game.Players.LocalPlayer -- for local scripts (client-side)
+if player then
+  unequipTool(player)
+end
+
+--Example Usage (unequip tool from every player)
+local function unequipAllTools()
+    for _, player in ipairs(game.Players:GetPlayers()) do
+        unequipTool(player)
+    end
+end
+
+--Example Usage (unequip tool from specific player)
+local function unequipSpecificTool(playerName)
+  local targetPlayer = game.Players:FindFirstChild(playerName)
+  if targetPlayer then
+    unequipTool(targetPlayer)
+  end
+end
+
+-- Example Usage (server-side, unequip tools from all players):
+--[[
+game.Players.PlayerAdded:Connect(function(player)
+    player.CharacterAdded:Connect(function(character)
+        --You can add a wait() here if needed.
+        unequipTool(player)
+    end)
+end)
+--]]
+
+--Example usage (server side, unequip all tools on a button press)
+--[[
+local button = --path to button here
+button.MouseButton1Click:Connect(function()
+    unequipAllTools()
+end)
+--]]
     end,
 })
 
