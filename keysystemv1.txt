@@ -3,6 +3,7 @@
 local Players = game:GetService("Players")
 local Player = Players.LocalPlayer
 local PlayerGui = Player:WaitForChild("PlayerGui")
+local StarterGui = game:GetService("StarterGui")
 
 -- CONFIGURATION
 local Identifier = "hackmanhubreal" -- Replace with your Panda Dev service identifier
@@ -49,6 +50,9 @@ local function CreateValidationGUI()
     frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     frame.BorderSizePixel = 0
     frame.AnchorPoint = Vector2.new(0.5, 0.5)
+    frame.Draggable = true
+    frame.Active = true
+
 
     local uicorner = Instance.new("UICorner", frame)
     uicorner.CornerRadius = UDim.new(0, 10)
@@ -61,7 +65,7 @@ local function CreateValidationGUI()
     closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
     closeButton.Font = Enum.Font.GothamBold
     closeButton.TextSize = 22
-    closeButton.Text = "✕"
+    closeButton.Text = "X"
     closeButton.AutoButtonColor = true
     closeButton.Name = "CloseButton"
 
@@ -92,11 +96,11 @@ local function CreateValidationGUI()
 
     local userHWID = tostring(Player.UserId)
     local keyLink = GetKeyLink(Identifier, userHWID)
-    linkLabel.Text = "Click Copy Key Link To Get Key Link | BETA "
+    linkLabel.Text = "Click Copy Key Link To Get Key"
 
     -- COPY BUTTON
     local copyBtn = Instance.new("TextButton", frame)
-    copyBtn.Size = UDim2.new(0, 120, 0, 25)
+    copyBtn.Size = UDim2.new(1, -20, 0, 30)
     copyBtn.Position = UDim2.new(0, 10, 0, 75)
     copyBtn.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
     copyBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -111,6 +115,12 @@ local function CreateValidationGUI()
         if setclipboard then
             setclipboard(keyLink)
             print("Key link copied to clipboard!")
+            
+StarterGui:SetCore("SendNotification", {
+    Title = "HackManHub Key System";
+    Text = "Key link copied to clipboard!";
+    Duration = 5; -- seconds
+})
         else
             print("setclipboard not available.")
         end
